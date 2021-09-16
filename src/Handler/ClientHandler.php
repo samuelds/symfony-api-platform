@@ -6,6 +6,7 @@ use App\Entity\Client;
 use App\Service\Webhook;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Messenger\Handler\MessageHandlerInterface;
+use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
 
 class ClientHandler implements MessageHandlerInterface
 {
@@ -24,13 +25,23 @@ class ClientHandler implements MessageHandlerInterface
 
     /**
      * @param Client $client
+     * @throws TransportExceptionInterface
      */
     public function __invoke(Client $client)
     {
-        $this->webhook->send($client);
-        //$this->entityManager->persist($client);
-        //$this->entityManager->flush(); // <- the error occurs here, but only when using an async transport handler
+        // Push to webhook.site
+        $response = $this->webhook->send($client);
 
-        echo "ok !";
+        $code = $response->getStatusCode();
+
+        if($code != 200)
+        {
+            // Action on error fo push
+        }
+
+        // Save on database !
+        $this->entityManager->persist($client);
+        $this->entityManager->flush();
+
     }
 }
