@@ -11,20 +11,16 @@ class Webhook
 {
     private HttpClientInterface $client;
 
-    private EntityManagerInterface $em;
-
     private string $token;
 
     /**
      * @param string $token
      * @param HttpClientInterface $client
-     * @param EntityManagerInterface $em
      */
-    public function __construct(string $token, HttpClientInterface $client, EntityManagerInterface $em)
+    public function __construct(string $token, HttpClientInterface $client)
     {
         $this->token  = $token;
         $this->client = $client;
-        $this->em     = $em;
     }
 
     /**
@@ -40,9 +36,9 @@ class Webhook
             [
                 'body' => [
                     'data' => json_encode([
-                        'name' => $client->getFirstName(),
-                        'firstName' => $client->getFirstName(),
-                        'email' => $client->getEmail(),
+                        'name'        => $client->getFirstName(),
+                        'firstName'   => $client->getFirstName(),
+                        'email'       => $client->getEmail(),
                         'phoneNumber' => $client->getPhoneNumber()
                     ])
                 ]
