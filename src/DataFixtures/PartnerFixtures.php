@@ -26,7 +26,8 @@ class PartnerFixtures extends Fixture
         $manager->persist($admin);
 
         // Simple Partner
-        for ($i = 0; $i < 2; $i++) {
+        for ($i = 0; $i < 2; $i++)
+        {
             $partner = new Partner();
             $partner->setUsername('login'. ($i + 1));
             $partner->setPassword($this->encoder->encodePassword($admin, "0000"));

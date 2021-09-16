@@ -66,9 +66,17 @@ class CurrentUserExtension implements QueryCollectionExtensionInterface, QueryIt
         if ($resourceClass === Client::class AND $isAdmin !== true)
         {
             $alias = $queryBuilder->getRootAlias()[0];
-            $queryBuilder
-                ->andWhere("$alias.partner = :current_user")
-                ->setParameter('current_user', $user->getId());
+            if ($user)
+            {
+                $queryBuilder
+                    ->andWhere("$alias.partner = :current_user")
+                    ->setParameter('current_user', $user->getId());
+            }
+            else
+            {
+                $queryBuilder
+                    ->andWhere("$alias.partner IS NULL");
+            }
         }
     }
 }
