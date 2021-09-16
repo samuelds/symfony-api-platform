@@ -6,6 +6,7 @@ use App\Entity\Client;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
+use Symfony\Contracts\HttpClient\ResponseInterface;
 
 class Webhook
 {
@@ -25,6 +26,7 @@ class Webhook
 
     /**
      * @param Client $client
+     * @return ResponseInterface
      * @throws TransportExceptionInterface
      */
     public function send(Client $client)

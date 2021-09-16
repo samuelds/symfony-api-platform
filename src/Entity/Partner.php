@@ -2,13 +2,39 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Core\Annotation\ApiResource;
 use App\Repository\PartnerRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 
+use App\Controller\MeController;
+use Symfony\Component\Serializer\Annotation\Groups;
+
 /**
  * @ORM\Entity(repositoryClass=PartnerRepository::class)
+ * @ApiResource(
+ *     collectionOperations={
+ *          "me" = {
+ *              "pagination_enabled" = false,
+ *              "path" = "/me",
+ *              "method" = "get",
+ *              "controller" = "MeController:class",
+ *              "read" = false
+ *          }
+ *      }),
+ *      itemOperations={
+ *          "get" = {
+ *              "controller" = "NotFoundAction::class",
+ *              "openapi_context" = { "summary" = "hidden" },
+ *              "read" = false,
+ *              "output" = false
+ *          }
+ *      },
+ *      normalizationContext={ "groups" = {"read:Partner"} }
+ * )
  */
 class Partner implements UserInterface, PasswordAuthenticatedUserInterface
 {
@@ -21,6 +47,7 @@ class Partner implements UserInterface, PasswordAuthenticatedUserInterface
 
     /**
      * @ORM\Column(type="string", length=180, unique=true)
+     * @Groups({ "read:Partner" })
      */
     private $username;
 
@@ -34,6 +61,16 @@ class Partner implements UserInterface, PasswordAuthenticatedUserInterface
      * @ORM\Column(type="string")
      */
     private $password;
+
+    /**
+     * @ORM\OneToMany(targetEntity=Client::class, mappedBy="partner")
+     */
+    private $clients;
+
+    public function __construct()
+    {
+        $this->clients = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -117,5 +154,35 @@ class Partner implements UserInterface, PasswordAuthenticatedUserInterface
     {
         // If you store any temporary, sensitive data on the user, clear it here
         // $this->plainPassword = null;
+    }
+
+    /**
+     * @return Collection|Client[]
+     */
+    public function getClients(): Collection
+    {
+        return $this->clients;
+    }
+
+    public function addClient(Client $client): self
+    {
+        if (!$this->clients->contains($client)) {
+            $this->clients[] = $client;
+            $client->setPartner($this);
+        }
+
+        return $this;
+    }
+
+    public function removeClient(Client $client): self
+    {
+        if ($this->clients->removeElement($client)) {
+            // set the owning side to null (unless already changed)
+            if ($client->getPartner() === $this) {
+                $client->setPartner(null);
+            }
+        }
+
+        return $this;
     }
 }

@@ -10,8 +10,19 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * @ORM\Entity(repositoryClass=ClientRepository::class)
  * @ApiResource(
- *     collectionOperations={"post"={"messenger"=true,"output"=false,"status"=202}},
- *     itemOperations={"get"={"status"=202}}
+ *     collectionOperations = {
+ *          "post" = {
+ *              "messenger" = true,
+ *              "output" = false,
+ *              "status" = 202
+ *          },
+ *          "get" = { "status" = 202 }
+ *     },
+ *     itemOperations = {
+ *          "get" = { "status" = 202 },
+ *          "put" = { "status" = 202 },
+ *          "delete" = { "status" = 202 }
+ *     }
  *  )
  */
 class Client
@@ -53,6 +64,12 @@ class Client
      * @ORM\Column(type="integer")
      */
     private $partnerId;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=Partner::class, inversedBy="clients")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $partner;
 
     public function getId(): ?int
     {
@@ -115,6 +132,18 @@ class Client
     public function setCreatedAt(\DateTimeImmutable $createdAt): self
     {
         $this->createdAt = $createdAt;
+
+        return $this;
+    }
+
+    public function getPartner(): ?Partner
+    {
+        return $this->partner;
+    }
+
+    public function setPartner(?Partner $partner): self
+    {
+        $this->partner = $partner;
 
         return $this;
     }
