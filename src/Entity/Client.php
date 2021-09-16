@@ -50,14 +50,9 @@ class Client
     private $createdAt;
 
     /**
-     * @ORM\Column(type="datetime_immutable")
+     * @ORM\Column(type="integer")
      */
-    private $updatedAt;
-
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
-    private $token;
+    private $partnerId;
 
     public function getId(): ?int
     {
@@ -124,27 +119,4 @@ class Client
         return $this;
     }
 
-    public function getUpdatedAt(): ?\DateTimeImmutable
-    {
-        return $this->updatedAt;
-    }
-
-    public function setUpdatedAt(\DateTimeImmutable $updatedAt): self
-    {
-        $this->updatedAt = $updatedAt;
-
-        return $this;
-    }
-
-    public function getToken(): ?string
-    {
-        return $this->token;
-    }
-
-    public function setToken(?string $token): self
-    {
-        $this->token = $token;
-
-        return $this;
-    }
 }
