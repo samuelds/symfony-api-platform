@@ -6,6 +6,7 @@ use ApiPlatform\Core\Annotation\ApiProperty;
 use ApiPlatform\Core\Annotation\ApiResource;
 use App\Repository\ClientRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ORM\Entity(repositoryClass=ClientRepository::class)
@@ -57,6 +58,7 @@ class Client
 
     /**
      * @ORM\Column(type="datetime_immutable")
+     * @Groups({ "read:Admin" })
      */
     private $createdAt;
 
