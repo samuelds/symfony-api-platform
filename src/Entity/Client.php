@@ -70,12 +70,6 @@ class Client
     private $createdAt;
 
     /**
-     * @ORM\Column(type="integer")
-     * @Groups({"admin:read", "admin:write"})
-     */
-    private $partnerId;
-
-    /**
      * @ORM\ManyToOne(targetEntity=Partner::class, inversedBy="clients")
      * @ORM\JoinColumn(nullable=false)
      */
