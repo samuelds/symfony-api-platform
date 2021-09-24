@@ -27,6 +27,11 @@ services:
             $token: '%app.webhookToken%'
             $client: '@http_client'
 
+    App\Serializer\ClientSerializer:
+        decorates: 'api_platform.serializer.context_builder'
+        arguments: [ '@App\Serializer\ClientSerializer.inner' ]
+        autoconfigure: false
+
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
 

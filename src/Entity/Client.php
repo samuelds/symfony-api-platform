@@ -23,7 +23,9 @@ use Symfony\Component\Serializer\Annotation\Groups;
  *          "get" = { "status" = 202 },
  *          "put" = { "status" = 202 },
  *          "delete" = { "status" = 202 }
- *     }
+ *     },
+ *     normalizationContext={"groups"={"read"}},
+ *     denormalizationContext={"groups"={"write"}}
  *  )
  */
 class Client
@@ -33,37 +35,43 @@ class Client
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
      * @ApiProperty(identifier=true)
+     * @Groups({"read", "write"})
      */
     private $id;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups({"read", "write"})
      */
     private $name;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups({"read", "write"})
      */
     private $firstName;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups({"read", "write"})
      */
     private $email;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups({"read", "write"})
      */
     private $phoneNumber;
 
     /**
      * @ORM\Column(type="datetime_immutable")
-     * @Groups({ "read:Admin" })
+     * @Groups({"admin:read", "admin:write"})
      */
     private $createdAt;
 
     /**
      * @ORM\Column(type="integer")
+     * @Groups({"admin:read", "admin:write"})
      */
     private $partnerId;
 

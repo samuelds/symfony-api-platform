@@ -10,7 +10,6 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 
-use App\Controller\MeController;
 use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
@@ -32,8 +31,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
  *              "read" = false,
  *              "output" = false
  *          }
- *      },
- *      normalizationContext={ "groups" = {"read:Partner"} }
+ *      }
  * )
  */
 class Partner implements UserInterface, PasswordAuthenticatedUserInterface
@@ -47,7 +45,6 @@ class Partner implements UserInterface, PasswordAuthenticatedUserInterface
 
     /**
      * @ORM\Column(type="string", length=180, unique=true)
-     * @Groups({ "read:Partner" })
      */
     private $username;
 
