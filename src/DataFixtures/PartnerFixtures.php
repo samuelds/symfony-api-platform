@@ -27,7 +27,7 @@ class PartnerFixtures extends Fixture
         // Admin
         $admin = new Partner();
         $admin->setUsername('admin');
-        $password = $this->encoder->encodePassword($admin, "0000");
+        $password = $this->encoder->encodePassword($admin, "admin");
         $admin->setPassword($password);
         $admin->setRoles(["ROLE_ADMIN"]);
         $manager->persist($admin);
