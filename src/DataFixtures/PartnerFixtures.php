@@ -11,17 +11,24 @@ class PartnerFixtures extends Fixture
 {
     private UserPasswordEncoderInterface $encoder;
 
+    /**
+     * @param UserPasswordEncoderInterface $encoder
+     */
     public function __construct(UserPasswordEncoderInterface $encoder)
     {
         $this->encoder = $encoder;
     }
 
+    /**
+     * @param ObjectManager $manager
+     */
     public function load(ObjectManager $manager)
     {
         // Admin
         $admin = new Partner();
         $admin->setUsername('admin');
-        $admin->setPassword($this->encoder->encodePassword($admin, "admin"));
+        $password = $this->encoder->encodePassword($admin, "0000");
+        $admin->setPassword($password);
         $admin->setRoles(["ROLE_ADMIN"]);
         $manager->persist($admin);
 
@@ -30,7 +37,8 @@ class PartnerFixtures extends Fixture
         {
             $partner = new Partner();
             $partner->setUsername('login'. ($i + 1));
-            $partner->setPassword($this->encoder->encodePassword($admin, "0000"));
+            $password = $this->encoder->encodePassword($partner, "0000");
+            $partner->setPassword($password);
             $manager->persist($partner);
         }
 
